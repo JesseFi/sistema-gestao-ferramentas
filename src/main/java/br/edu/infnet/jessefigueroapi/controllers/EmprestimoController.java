@@ -21,15 +21,15 @@ public class EmprestimoController {
     }
 
     @PostMapping
-    public ResponseEntity<EmprestimoResponseDTO> insert(@Valid @RequestBody EmprestimoRequestDTO emprestimo) {
-        EmprestimoResponseDTO empDTO = emprestimoService.insert(emprestimo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(empDTO);
+    public ResponseEntity<EmprestimoResponseDTO> insert(@Valid @RequestBody EmprestimoRequestDTO emprestimoRequestDTO) {
+        EmprestimoResponseDTO emprestimoResponseDTO = emprestimoService.insert(emprestimoRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(emprestimoResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmprestimoResponseDTO> update(@PathVariable Integer id, @Valid @RequestBody EmprestimoRequestDTO emprestimo) {
-        EmprestimoResponseDTO empDTO = emprestimoService.update(id, emprestimo);
-        return ResponseEntity.ok(empDTO);
+    public ResponseEntity<EmprestimoResponseDTO> update(@PathVariable Integer id, @Valid @RequestBody EmprestimoRequestDTO emprestimoRequestDTO) {
+        EmprestimoResponseDTO emprestimoResponseDTO = emprestimoService.update(id, emprestimoRequestDTO);
+        return ResponseEntity.ok(emprestimoResponseDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -40,14 +40,20 @@ public class EmprestimoController {
 
     @GetMapping
     public ResponseEntity<List<EmprestimoResponseDTO>> findAll() {
-        List<EmprestimoResponseDTO> empsDTO = emprestimoService.findAll();
-        return ResponseEntity.ok(empsDTO);
+        List<EmprestimoResponseDTO> emprestimoResponseDTO = emprestimoService.findAll();
+        return ResponseEntity.ok(emprestimoResponseDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmprestimoResponseDTO> findById(@Valid @PathVariable Integer id) {
-        EmprestimoResponseDTO empDTO = emprestimoService.findById(id);
-        return ResponseEntity.ok(empDTO);
+        EmprestimoResponseDTO emprestimoResponseDTO = emprestimoService.findById(id);
+        return ResponseEntity.ok(emprestimoResponseDTO);
+    }
+
+    @PatchMapping("/{id}/devolver")
+    public ResponseEntity<EmprestimoResponseDTO> devolverFerramenta(@PathVariable Integer id) {
+        EmprestimoResponseDTO emprestimoResponseDTO = emprestimoService.devolverFerramenta(id);
+        return ResponseEntity.ok(emprestimoResponseDTO);
     }
 
 }

@@ -1,21 +1,22 @@
 package br.edu.infnet.jessefigueroapi.dtos.ferramenta;
 
-import br.edu.infnet.jessefigueroapi.model.domain.Ferramenta;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
 public class FerramentaRequestDTO {
-
-    @NotBlank
-    private Integer id;
 
     @NotBlank(message = "Nome é obrigatório!")
     private String nome;
@@ -41,30 +42,4 @@ public class FerramentaRequestDTO {
     @Column(length = 500)
     private String descricao;
 
-    public FerramentaRequestDTO(Ferramenta ferramenta) {
-        this.id = ferramenta.getId();
-        this.nome = ferramenta.getNome();
-        this.tipo = ferramenta.getTipo();
-        this.fabricante = ferramenta.getFabricante();
-        this.preco = ferramenta.getPreco();
-        this.numeroSerie = ferramenta.getNumeroSerie();
-        this.dataAquisicao = ferramenta.getDataAquisicao();
-        this.disponivel = ferramenta.getDisponivel();
-        this.descricao = ferramenta.getDescricao();
-    }
-
-    public Ferramenta toEntity() {
-        Ferramenta ferramenta = new Ferramenta();
-        ferramenta.setId(this.id);
-        ferramenta.setNome(this.nome);
-        ferramenta.setTipo(this.tipo);
-        ferramenta.setFabricante(this.fabricante);
-        ferramenta.setPreco(this.preco);
-        ferramenta.setNumeroSerie(this.numeroSerie);
-        ferramenta.setDataAquisicao(this.dataAquisicao);
-        ferramenta.setDisponivel(this.disponivel);
-        ferramenta.setDescricao(this.descricao);
-
-        return ferramenta;
-    }
 }

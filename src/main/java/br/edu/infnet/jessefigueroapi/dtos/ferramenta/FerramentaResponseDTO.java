@@ -1,6 +1,5 @@
 package br.edu.infnet.jessefigueroapi.dtos.ferramenta;
 
-import br.edu.infnet.jessefigueroapi.model.domain.Ferramenta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,17 +24,5 @@ public class FerramentaResponseDTO {
     private LocalDateTime dataAquisicao;
     private Boolean disponivel;
     private String descricao;
-
-    public FerramentaResponseDTO(Ferramenta ferramenta) {
-        this.id = ferramenta.getId();
-        this.nome = ferramenta.getNome();
-        this.tipo = ferramenta.getTipo();
-        this.fabricante = ferramenta.getFabricante();
-        this.preco = ferramenta.getPreco();
-        this.numeroSerie = ferramenta.getNumeroSerie();
-        this.dataAquisicao = ferramenta.getDataAquisicao();
-        this.disponivel = ferramenta.getDisponivel();
-        this.descricao = ferramenta.getDescricao();
-    }
 
 }

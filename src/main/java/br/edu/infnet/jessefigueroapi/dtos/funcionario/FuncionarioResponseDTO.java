@@ -1,7 +1,7 @@
 package br.edu.infnet.jessefigueroapi.dtos.funcionario;
 
-import br.edu.infnet.jessefigueroapi.model.domain.Funcionario;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import br.edu.infnet.jessefigueroapi.dtos.endereco.EnderecoResponseDTO;
+import br.edu.infnet.jessefigueroapi.model.enums.StatusFuncionario;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,22 +26,10 @@ public class FuncionarioResponseDTO {
     private String matricula;
     private String departamento;
     private String cargo;
-
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataAdmissao;
 
-    private Boolean ativo;
+    private StatusFuncionario status;
 
-    public FuncionarioResponseDTO(Funcionario funcionario) {
-        this.id = funcionario.getId();
-        this.nome = funcionario.getNome();
-        this.cpf = funcionario.getCpf();
-        this.email = funcionario.getEmail();
-        this.telefone = funcionario.getTelefone();
-        this.matricula = funcionario.getMatricula();
-        this.departamento = funcionario.getDepartamento();
-        this.cargo = funcionario.getCargo();
-        this.dataAdmissao = funcionario.getDataAdmissao();
-        this.ativo = funcionario.getAtivo();
-    }
+    private EnderecoResponseDTO endereco;
+
 }

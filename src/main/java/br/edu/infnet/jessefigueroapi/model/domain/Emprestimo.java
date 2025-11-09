@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
-import jakarta.validation.constraints.Min;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "tb_emprestimos")
-@JsonIgnoreProperties
 public class Emprestimo {
 
     @Id
@@ -67,10 +64,6 @@ public class Emprestimo {
 
     public boolean isAtivo() {
         return StatusEmprestimo.ATIVO.equals(this.status);
-    }
-
-    public boolean isCancelado() {
-        return StatusEmprestimo.CANCELADO.equals(this.status);
     }
 
 }

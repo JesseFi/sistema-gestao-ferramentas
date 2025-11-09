@@ -2,10 +2,12 @@ package br.edu.infnet.jessefigueroapi.model.service.impl;
 
 import br.edu.infnet.jessefigueroapi.dtos.ferramenta.FerramentaRequestDTO;
 import br.edu.infnet.jessefigueroapi.dtos.ferramenta.FerramentaResponseDTO;
-import br.edu.infnet.jessefigueroapi.exceptions.FuncionarioNotFoundException;
+import br.edu.infnet.jessefigueroapi.exceptions.FerramentaNotFoundException;
+import br.edu.infnet.jessefigueroapi.mapper.FerramentaMapper;
 import br.edu.infnet.jessefigueroapi.model.domain.Ferramenta;
 import br.edu.infnet.jessefigueroapi.model.repository.FerramentaRepository;
 import br.edu.infnet.jessefigueroapi.model.service.FerramentaService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,18 +15,22 @@ import java.util.List;
 @Service
 public class FerramentaServiceImpl implements FerramentaService {
 
-
     private final FerramentaRepository ferramentaRepository;
+    private final FerramentaMapper ferramentaMapper;
 
-    public FerramentaServiceImpl(FerramentaRepository ferramentaRepository) {
+    public FerramentaServiceImpl(FerramentaRepository ferramentaRepository, FerramentaMapper ferramentaMapper) {
         this.ferramentaRepository = ferramentaRepository;
+        this.ferramentaMapper = ferramentaMapper;
     }
 
+    @Transactional
     @Override
     public FerramentaResponseDTO insert(FerramentaRequestDTO ferramentaRequestDTO) {
+
         validarFerramenta(ferramentaRequestDTO);
-        Ferramenta savedFerramenta = ferramentaRepository.save(ferramentaRequestDTO.toEntity());
-        return new FerramentaResponseDTO(savedFerramenta);
+
+        Ferramenta ferramenta = ferramentaMapper.toEntity(ferramentaRequestDTO);
+        return ferramentaMapper.toDto(ferramentaRepository.save(ferramenta));
     }
 
     @Override
@@ -35,61 +41,55 @@ public class FerramentaServiceImpl implements FerramentaService {
 
     @Override
     public List<FerramentaResponseDTO> findAll() {
-        List<Ferramenta> funcs = ferramentaRepository.findAll();
-        return funcs.stream().map(FerramentaResponseDTO::new).toList();
+        return ferramentaRepository.findAll().stream().map(ferramentaMapper::toDto).toList();
     }
 
     @Override
     public FerramentaResponseDTO findById(Integer id) {
-        Ferramenta ferramenta = findEntityById(id);
-        return new FerramentaResponseDTO(ferramenta);
+        return ferramentaMapper.toDto(ferramentaRepository.findById(id)
+                .orElseThrow(() -> new FerramentaNotFoundException("Ferramenta não encontrada com ID: " + id)));
     }
 
     @Override
-    public Ferramenta findEntityById(Integer id) {
-        return ferramentaRepository.findById(id).orElseThrow(() -> new FuncionarioNotFoundException("Funcionário não encontrado: " + id));
+    public FerramentaResponseDTO update(Integer id, FerramentaRequestDTO ferramentaRequestDTO) {
+
+        Ferramenta ferramenta = ferramentaRepository.findById(id).orElseThrow(() -> new FerramentaNotFoundException("Funcionário não encontrado com ID: " + id + " para atualizar!"));;
+
+        validarFerramenta(ferramentaRequestDTO);
+
+        ferramenta.setNome(ferramentaRequestDTO.getNome());
+        ferramenta.setTipo(ferramentaRequestDTO.getTipo());
+        ferramenta.setFabricante(ferramentaRequestDTO.getFabricante());
+        ferramenta.setPreco(ferramentaRequestDTO.getPreco());
+        ferramenta.setNumeroSerie(ferramentaRequestDTO.getNumeroSerie());
+        ferramenta.setDisponivel(ferramentaRequestDTO.getDisponivel());
+        ferramenta.setDescricao(ferramentaRequestDTO.getDescricao());
+
+        return ferramentaMapper.toDto(ferramentaRepository.save(ferramenta));
     }
 
-    @Override
-    public FerramentaResponseDTO update(Integer id, FerramentaRequestDTO ferramenta) {
-
-        Ferramenta f = findEntityById(id);
-        validarFerramenta(new FerramentaRequestDTO(f));
-
-        f.setNome(ferramenta.getNome());
-        f.setPreco(ferramenta.getPreco());
-        f.setFabricante(ferramenta.getFabricante());
-        f.setDescricao(ferramenta.getDescricao());
-        f.setDisponivel(ferramenta.getDisponivel());
-        f.setTipo(ferramenta.getTipo());
-        f.setNumeroSerie(ferramenta.getNumeroSerie());
-
-        Ferramenta savedFerramenta = ferramentaRepository.save(f);
-        return new FerramentaResponseDTO(savedFerramenta);
-    }
-
-    private void validarFerramenta(FerramentaRequestDTO ferramenta) {
-        if (ferramenta == null) {
+    private void validarFerramenta(FerramentaRequestDTO ferramentaRequestDTO) {
+        if (ferramentaRequestDTO == null) {
             throw new IllegalArgumentException("Ferramenta não pode ser nula");
         }
 
-        if (ferramenta.getNome() == null || ferramenta.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome da ferramenta é obrigatório");
+        if (ferramentaRequestDTO.getNome() == null || ferramentaRequestDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome da ferramentaRequestDTO é obrigatório");
         }
 
-        if (ferramenta.getPreco() == null || ferramenta.getPreco() <= 0) {
+        if (ferramentaRequestDTO.getPreco() == null || ferramentaRequestDTO.getPreco() <= 0) {
             throw new IllegalArgumentException("Preço deve ser maior que zero");
         }
 
-        if (ferramenta.getFabricante() == null || ferramenta.getFabricante().trim().isEmpty()) {
+        if (ferramentaRequestDTO.getFabricante() == null || ferramentaRequestDTO.getFabricante().trim().isEmpty()) {
             throw new IllegalArgumentException("Fabricante é obrigatório");
         }
 
-        if (ferramenta.getNumeroSerie() == null || ferramenta.getNumeroSerie().trim().isEmpty()) {
+        if (ferramentaRequestDTO.getNumeroSerie() == null || ferramentaRequestDTO.getNumeroSerie().trim().isEmpty()) {
             throw new IllegalArgumentException("Número de série é obrigatório");
         }
 
-        if (ferramenta.getTipo() == null || ferramenta.getTipo().trim().isEmpty()) {
+        if (ferramentaRequestDTO.getTipo() == null || ferramentaRequestDTO.getTipo().trim().isEmpty()) {
             throw new IllegalArgumentException("Tipo da ferramenta é obrigatório");
         }
     }

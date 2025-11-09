@@ -3,7 +3,11 @@ package br.edu.infnet.jessefigueroapi.model.service.impl;
 import br.edu.infnet.jessefigueroapi.dtos.funcionario.FuncionarioRequestDTO;
 import br.edu.infnet.jessefigueroapi.dtos.funcionario.FuncionarioResponseDTO;
 import br.edu.infnet.jessefigueroapi.exceptions.FuncionarioNotFoundException;
+import br.edu.infnet.jessefigueroapi.mapper.FuncionarioMapper;
+import br.edu.infnet.jessefigueroapi.model.domain.Endereco;
 import br.edu.infnet.jessefigueroapi.model.domain.Funcionario;
+import br.edu.infnet.jessefigueroapi.model.enums.StatusFuncionario;
+import br.edu.infnet.jessefigueroapi.model.repository.EnderecoRepository;
 import br.edu.infnet.jessefigueroapi.model.repository.FuncionarioRepository;
 import br.edu.infnet.jessefigueroapi.model.service.FuncionarioService;
 import org.springframework.stereotype.Service;
@@ -14,71 +18,81 @@ import java.util.List;
 public class FuncionarioServiceImpl implements FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
+    private final EnderecoRepository enderecoRepository;
+    private final FuncionarioMapper funcionarioMapper;
 
-    public FuncionarioServiceImpl(FuncionarioRepository funcionarioRepository) {
+    public FuncionarioServiceImpl(FuncionarioRepository funcionarioRepository, EnderecoRepository enderecoRepository, FuncionarioMapper funcionarioMapper) {
         this.funcionarioRepository = funcionarioRepository;
+        this.enderecoRepository = enderecoRepository;
+        this.funcionarioMapper = funcionarioMapper;
     }
 
     @Override
     public FuncionarioResponseDTO insert(FuncionarioRequestDTO funcionarioRequestDTO) {
+
         validarFuncionario(funcionarioRequestDTO);
-        Funcionario saved = funcionarioRepository.save(funcionarioRequestDTO.toEntity());
-        return new FuncionarioResponseDTO(saved);
+
+        Endereco endereco = enderecoRepository.findById(funcionarioRequestDTO.getEnderecoId())
+                .orElseThrow(() -> new IllegalArgumentException("Endereço com ID " + funcionarioRequestDTO.getEnderecoId() + " não foi encontrado!"));
+
+        Funcionario funcionario = funcionarioMapper.toEntity(funcionarioRequestDTO);
+        funcionario.setEndereco(endereco);
+        return funcionarioMapper.toDto(funcionarioRepository.save(funcionario));
     }
 
     @Override
     public void delete(Integer id) {
-        Funcionario funcionario = findEntityById(id);
-        funcionarioRepository.delete(funcionario);
+        if (!funcionarioRepository.existsById(id)) {
+            throw new FuncionarioNotFoundException("Funcionário não encontrado com ID: " + id + " para exclusão!");
+        }
+        funcionarioRepository.deleteById(id);
     }
 
     @Override
     public List<FuncionarioResponseDTO> findAll() {
-        List<Funcionario> funcs = funcionarioRepository.findAll();
-        return funcs.stream().map(FuncionarioResponseDTO::new).toList();
+        return funcionarioRepository.findAll().stream().map(funcionarioMapper::toDto).toList();
     }
 
     @Override
     public FuncionarioResponseDTO findById(Integer id) {
-        Funcionario funcionario = findEntityById(id);
-        return new FuncionarioResponseDTO(funcionario);
+        return funcionarioMapper.toDto(funcionarioRepository.findById(id).orElseThrow(() ->
+                new FuncionarioNotFoundException("Funcionário não encontrado com ID: " + id)));
     }
 
     @Override
-    public Funcionario findEntityById(Integer id) {
-        return funcionarioRepository.findById(id).orElseThrow(() -> new FuncionarioNotFoundException("Funcionário não encontrado: " + id));
+    public FuncionarioResponseDTO update(Integer id, FuncionarioRequestDTO funcionarioRequestDTO) {
+
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new FuncionarioNotFoundException("Funcionário não encontrado com ID: " + id + " para atualizar!"));
+
+        validarFuncionario(funcionarioRequestDTO);
+
+        funcionario.setNome(funcionarioRequestDTO.getNome());
+        funcionario.setEmail(funcionarioRequestDTO.getEmail());
+        funcionario.setCpf(funcionarioRequestDTO.getCpf());
+        funcionario.setTelefone(funcionarioRequestDTO.getTelefone());
+        funcionario.setMatricula(funcionarioRequestDTO.getMatricula());
+        funcionario.setDepartamento(funcionarioRequestDTO.getDepartamento());
+        funcionario.setCargo(funcionarioRequestDTO.getCargo());
+        funcionario.setDataAdmissao(funcionarioRequestDTO.getDataAdmissao());
+        funcionario.setStatus(funcionarioRequestDTO.getStatus());
+
+        Endereco endereco = enderecoRepository.findById(funcionarioRequestDTO.getEnderecoId())
+                .orElseThrow(() -> new IllegalArgumentException("Endereço não encontrado: " + funcionarioRequestDTO.getEnderecoId()));
+        funcionario.setEndereco(endereco);
+
+        return funcionarioMapper.toDto(funcionarioRepository.save(funcionario));
     }
 
-    @Override
-    public FuncionarioResponseDTO update(Integer id, FuncionarioRequestDTO funcionario) {
+    public FuncionarioResponseDTO alterarStatus(Integer id, StatusFuncionario status) {
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new FuncionarioNotFoundException("Funcionário não encontrado com ID: " + id + " para ativar!"));
 
-        Funcionario func = findEntityById(id);
-        validarFuncionario(funcionario);
-
-        func.setNome(funcionario.getNome());
-        func.setEmail(funcionario.getEmail());
-        func.setCpf(funcionario.getCpf());
-        func.setTelefone(funcionario.getTelefone());
-        func.setMatricula(funcionario.getMatricula());
-        func.setDepartamento(funcionario.getDepartamento());
-        func.setCargo(funcionario.getCargo());
-        func.setDataAdmissao(funcionario.getDataAdmissao());
-        func.setAtivo(funcionario.getAtivo());
-        func.setEndereco(funcionario.getEndereco());
-
-        Funcionario saved = funcionarioRepository.save(func);
-
-        return new FuncionarioResponseDTO(saved);
-    }
-
-    public FuncionarioResponseDTO ativar(Integer id) {
-        Funcionario func = findEntityById(id);
-
-        if (!func.getAtivo()) {
-            System.err.println("O funcionário " + func.getNome() + " está desativado!");
-            return new FuncionarioResponseDTO(func);
+        if (funcionario.getStatus().equals(status)) {
+            throw new IllegalArgumentException("Funcionário " + funcionario.getNome() + " já está ativo(a)!");
         }
-        return new FuncionarioResponseDTO(func);
+
+        funcionario.setStatus(status);
+        Funcionario saved = funcionarioRepository.save(funcionario);
+        return funcionarioMapper.toDto(saved);
     }
 
     private void validarFuncionario(FuncionarioRequestDTO funcionarioRequestDTO) {
@@ -106,7 +120,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             throw new IllegalArgumentException("Cargo do funcionário é obrigatório");
         }
 
-        if (funcionarioRequestDTO.getEndereco() == null) {
+        if (funcionarioRequestDTO.getEnderecoId() == null || funcionarioRequestDTO.getEnderecoId() == 0) {
             throw new IllegalArgumentException("Endereço do funcionário é obrigatório");
         }
 

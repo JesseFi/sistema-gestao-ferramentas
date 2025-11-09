@@ -1,7 +1,6 @@
 package br.edu.infnet.jessefigueroapi.dtos.funcionario;
 
-import br.edu.infnet.jessefigueroapi.model.domain.Endereco;
-import br.edu.infnet.jessefigueroapi.model.domain.Funcionario;
+import br.edu.infnet.jessefigueroapi.model.enums.StatusFuncionario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
@@ -18,22 +17,18 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class FuncionarioRequestDTO {
 
-    @NotBlank(message = "ID é obrigatória")
-    private Integer id;
-
-    @NotBlank(message = "Nome é obrigatória")
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotBlank(message = "CPF é obrigatória")
+    @NotBlank(message = "CPF é obrigatório")
     private String cpf;
 
-    @NotBlank(message = "E-mail é obrigatória")
+    @NotBlank(message = "E-mail é obrigatório")
     private String email;
 
-    @NotBlank(message = "Telefone é obrigatória")
+    @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
 
     @NotBlank(message = "Matrícula é obrigatória")
@@ -49,41 +44,9 @@ public class FuncionarioRequestDTO {
     @PastOrPresent(message = "Data de admissão não pode ser futura")
     private LocalDate dataAdmissao;
 
-    @NotNull(message = "Ativo não pode ser nulo!")
-    private Boolean ativo;
+    private StatusFuncionario status;
 
     @NotNull(message = "Endereço é obrigatório")
-    private Endereco endereco;
-
-    public FuncionarioRequestDTO(Funcionario funcionario) {
-        this.id = funcionario.getId();
-        this.nome = funcionario.getNome();
-        this.cpf = funcionario.getCpf();
-        this.email = funcionario.getEmail();
-        this.telefone = funcionario.getTelefone();
-        this.matricula = funcionario.getMatricula();
-        this.departamento = funcionario.getDepartamento();
-        this.cargo = funcionario.getCargo();
-        this.dataAdmissao = funcionario.getDataAdmissao();
-        this.ativo = funcionario.getAtivo();
-        this.endereco = funcionario.getEndereco();
-    }
-
-    public Funcionario toEntity() {
-        Funcionario funcionario = new Funcionario();
-        funcionario.setId(this.id);
-        funcionario.setNome(this.nome);
-        funcionario.setCpf(this.cpf);
-        funcionario.setEmail(this.email);
-        funcionario.setTelefone(this.telefone);
-        funcionario.setMatricula(this.matricula);
-        funcionario.setDepartamento(this.departamento);
-        funcionario.setCargo(this.cargo);
-        funcionario.setDataAdmissao(this.dataAdmissao);
-        funcionario.setAtivo(this.ativo);
-        funcionario.setEndereco(this.endereco);
-
-        return funcionario;
-    }
+    private Integer enderecoId;
 
 }

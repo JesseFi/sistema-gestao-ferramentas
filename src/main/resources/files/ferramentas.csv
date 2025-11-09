@@ -1,15 +1,35 @@
-Martelo de Garra 16oz;Martelo;Vonder;45.90;MT0012024;Martelo de garra profissional 16 onças com cabo de fibra de vidro;true
-Chave de Fenda Phillips #2;Chave de Fenda;Tramontina;12.50;CF0022024;Chave de fenda Phillips número 2 com cabo antiderrapante;true
-Alicate de Corte 8";Alicate;Stanley;35.75;AL0032024;Alicate de corte diagonal 8 polegadas profissional;true
-Serra Tico-Tico 500W;Serra Elétrica;Bosch;289.90;SE0042024;Serra tico-tico 500W com velocidade variável;false
-Furadeira de Impacto 18V;Furadeira;Makita;459.00;FD0052024;Furadeira de impacto 18V sem fio com 2 baterias;true
-Jogo de Soquetes 1/2" 32 peças;Soquete;Proxxon;189.90;SQ0062024;Jogo completo de soquetes 1/2 polegada com 32 peças;true
-Trena Laser 50m;Medição;Leica;299.00;TR0072024;Trena laser profissional com alcance de 50 metros;true
-Nível Laser 360°;Medição;DeWalt;425.50;NL0082024;Nível laser 360 graus para alinhamento preciso;true
-Chave Inglesa 10";Chave;Caterpillar;67.80;CI0092024;Chave inglesa ajustável 10 polegadas;false
-Parafusadeira 12V;Parafusadeira;Black & Decker;189.90;PF0102024;Parafusadeira 12V com torque ajustável;true
-Lixadora Orbital 125mm;Lixadora;Bosch;159.90;LI0112024;Lixadora orbital 125mm com poeira;true
-Martelete Demolidor 1500W;Martelete;Makita;789.00;MA0122024;Martelete demolidor 1500W com função cinzel;true
-Compressor de Ar 2HP;Compressor;Schulz;429.90;CO0132024;Compressor de ar 2HP 10 litros;false
-Pistola de Pintura;Pintura;Wagner;299.00;PI0142024;Pistola de pintura HVLP profissional;true
-Multímetro Digital;Medição;Minipa;89.90;MU0152024;Multímetro digital true RMS;true
+Furadeira de Impacto;Elétrica;Bosch;549.90;BOSCH-FD-202501;2024-02-10T10:30:00;true;Furadeira de impacto profissional 220V
+Parafusadeira;Elétrica;Makita;799.50;MAK-PF-202502;2023-11-15T09:00:00;true;Parafusadeira compacta com bateria 18V
+Serra Tico-Tico;Elétrica;DeWalt;1249.00;DWT-ST-202503;2022-07-22T14:00:00;true;Serra tico-tico industrial com ajuste de velocidade
+Chave de Fenda;Manual;Tramontina;29.90;TRA-CF-202504;2021-03-05T08:00:00;true;Chave de fenda ponta cruzada profissional
+Esmerilhadeira;Elétrica;Bosch;499.00;BOSCH-ES-202505;2023-08-17T15:00:00;true;Esmerilhadeira angular para corte e desbaste
+Martelo;Manual;Vonder;39.90;VON-MT-202506;2020-12-10T13:45:00;true;Martelo 25mm cabo fibra
+Compressor de Ar;Pneumático;Schulz;2499.90;SCH-CP-202507;2024-01-02T09:15:00;true;Compressor de ar 25 litros para pintura
+Serrote;Manual;Tramontina;49.90;TRA-SR-202508;2022-09-18T10:00:00;true;Serrote para madeira 18 pol
+Lixadeira Orbital;Elétrica;Makita;699.00;MAK-LX-202509;2023-06-11T11:30:00;true;Lixadeira orbital para acabamento
+Chave Inglesa;Manual;Gedore;89.90;GED-CI-202510;2021-01-25T09:20:00;true;Chave inglesa ajustável 12 pol
+Alicate Universal;Manual;Stanley;34.90;STN-AU-202511;2020-05-13T14:20:00;true;Alicate universal isolado 8 pol
+Torquímetro;Manual;Gedore;899.00;GED-TQ-202512;2023-03-04T09:50:00;true;Torquímetro 20-120Nm
+Soprador Térmico;Elétrica;Black&Decker;299.00;BD-SP-202513;2023-02-15T10:45:00;true;Soprador térmico profissional
+Serra Circular;Elétrica;Bosch;899.00;BOSCH-SC-202514;2024-01-05T08:10:00;true;Serra circular 185mm 1400W
+Talhadeira;Manual;Tramontina;19.90;TRA-TH-202515;2019-11-03T12:00:00;true;Talhadeira para construção civil
+Marreta;Manual;Vonder;69.90;VON-MR-202516;2022-04-21T09:30:00;true;Marreta 2kg cabo madeira
+Chave Phillips;Manual;Hercules;24.90;HER-CP-202517;2020-02-28T11:00:00;true;Chave Phillips magnética
+Escada Telescópica;Manual;Vonder;799.90;VON-ET-202518;2023-09-10T09:10:00;true;Escada telescópica 3,8m alumínio
+Cortador de Piso;Manual;Cortag;599.00;CTG-CP-202519;2022-06-09T15:40:00;true;Cortador de piso porcelanato
+Nivel Laser;Eletrônico;Bosch;1299.90;BOSCH-NL-202520;2023-10-21T13:15:00;true;Nível laser autonivelante
+Jogo de Brocas;Manual;Bosch;79.90;BOSCH-JB-202521;2021-08-03T08:00:00;true;Jogo de brocas para metal e madeira
+Pistola de Pintura;Pneumático;Schulz;499.90;SCH-PP-202522;2023-01-12T16:15:00;true;Pistola pulverizadora profissional
+Chave Allen;Manual;Gedore;19.90;GED-CA-202523;2021-10-03T10:00:00;true;Chave allen 6mm
+Martelo de Borracha;Manual;Tramontina;34.90;TRA-MB-202524;2022-07-27T11:40:00;true;Martelo borracha 450g
+Politriz;Elétrica;DeWalt;1199.00;DWT-PL-202525;2024-01-15T14:25:00;true;Politriz automotiva 1250W
+Roteador de Madeira;Elétrica;Makita;999.00;MAK-RT-202526;2023-03-22T15:50:00;true;Roteador para madeira 1200W
+Alicate de Corte;Manual;Stanley;29.90;STN-AC-202527;2021-02-05T10:05:00;true;Alicate de corte lateral
+Cabos de Força;Manual;Vonder;49.90;VON-CB-202528;2019-10-02T09:55:00;true;Cabos reforçados para ferramentas
+Arco de Serra;Manual;Tramontina;39.90;TRA-AS-202529;2020-06-14T08:40:00;true;Arco de serra aço carbono
+Jogo de Chaves Torx;Manual;Gedore;89.90;GED-TX-202530;2022-11-09T13:20:00;true;Jogo de chave torx profissional
+Plaina Manual;Manual;Stanley;149.90;STN-PM-202531;2023-05-30T07:50:00;true;Plaina manual aço carbono
+Lavadora de Alta Pressão;Elétrica;Karcher;1599.00;KRC-LV-202532;2024-01-18T11:10:00;true;Lavadora alta pressão 1800 PSI
+Rebitador;Manual;Vonder;59.90;VON-RB-202533;2021-12-11T12:45:00;true;Rebitador manual alumínio
+Tesoura de Corte;Manual;Tramontina;24.90;TRA-TS-202534;2020-03-08T09:35:00;true;Tesoura de chapa leve
+Serra de Bancada;Elétrica;DeWalt;2799.00;DWT-SB-202535;2024-02-01T09:00:00;true;Serra de bancada 1800W industrial

@@ -15,5 +15,6 @@ public interface EmprestimoService {
      List<EmprestimoResponseDTO> findAll();
      EmprestimoResponseDTO findById(Integer id);
      EmprestimoResponseDTO update (Integer id, EmprestimoRequestDTO emprestimo);
-     Emprestimo findEntityById(Integer id);
+     EmprestimoResponseDTO devolverFerramenta(Integer emprestimoId);
+
 }

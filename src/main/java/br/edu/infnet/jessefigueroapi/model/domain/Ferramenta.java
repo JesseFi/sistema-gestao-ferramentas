@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -36,11 +37,12 @@ public class Ferramenta {
     private Double preco;
 
     @NotBlank(message = "Número de série é obrigatório")
-    @Column(name = "numero_serie", nullable = false, unique = true)
+    @Column(name = "numero_serie", nullable = false)
     private String numeroSerie;
 
     @PastOrPresent(message = "Data de aquisição não pode ser futura")
-    @Column(name = "data_aquisicao", nullable = false)
+    @Column(name = "data_aquisicao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataAquisicao;
 
     @Column(nullable = false)
@@ -48,11 +50,6 @@ public class Ferramenta {
 
     @Column(length = 500)
     private String descricao;
-
-    public Ferramenta() {
-        this.dataAquisicao = LocalDateTime.now();
-        this.disponivel = true;
-    }
 
     @Override
     public String toString() {

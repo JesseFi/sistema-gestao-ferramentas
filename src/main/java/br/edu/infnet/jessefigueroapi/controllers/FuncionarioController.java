@@ -2,6 +2,7 @@ package br.edu.infnet.jessefigueroapi.controllers;
 
 import br.edu.infnet.jessefigueroapi.dtos.funcionario.FuncionarioRequestDTO;
 import br.edu.infnet.jessefigueroapi.dtos.funcionario.FuncionarioResponseDTO;
+import br.edu.infnet.jessefigueroapi.model.enums.StatusFuncionario;
 import br.edu.infnet.jessefigueroapi.model.service.impl.FuncionarioServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -51,8 +52,8 @@ public class FuncionarioController {
     }
 
     @PatchMapping("/{id}/ativar")
-    public ResponseEntity<FuncionarioResponseDTO> ativar(@PathVariable Integer id) {
-        FuncionarioResponseDTO funcDTO = funcionarioService.ativar(id);
+    public ResponseEntity<FuncionarioResponseDTO> ativar(@PathVariable Integer id, @RequestParam StatusFuncionario status) {
+        FuncionarioResponseDTO funcDTO = funcionarioService.alterarStatus(id, status);
         return ResponseEntity.ok(funcDTO);
     }
 }

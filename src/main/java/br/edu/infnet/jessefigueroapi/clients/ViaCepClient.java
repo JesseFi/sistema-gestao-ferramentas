@@ -1,6 +1,6 @@
 package br.edu.infnet.jessefigueroapi.clients;
 
-import br.edu.infnet.jessefigueroapi.model.domain.Endereco;
+import br.edu.infnet.jessefigueroapi.dtos.endereco.EnderecoResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ViaCepClient {
 
     @GetMapping("/{cep}/json/")
-    Endereco findByCep(@PathVariable String cep);
+    EnderecoResponseDTO findByCep(@PathVariable String cep);
 
 }

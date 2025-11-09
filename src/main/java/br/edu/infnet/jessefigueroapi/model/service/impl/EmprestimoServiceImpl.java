@@ -2,15 +2,18 @@ package br.edu.infnet.jessefigueroapi.model.service.impl;
 
 import br.edu.infnet.jessefigueroapi.dtos.emprestimo.EmprestimoRequestDTO;
 import br.edu.infnet.jessefigueroapi.dtos.emprestimo.EmprestimoResponseDTO;
-import br.edu.infnet.jessefigueroapi.dtos.ferramenta.FerramentaResponseDTO;
-import br.edu.infnet.jessefigueroapi.dtos.funcionario.FuncionarioResponseDTO;
 import br.edu.infnet.jessefigueroapi.exceptions.*;
+import br.edu.infnet.jessefigueroapi.mapper.EmprestimoMapper;
 import br.edu.infnet.jessefigueroapi.model.domain.Emprestimo;
 import br.edu.infnet.jessefigueroapi.model.domain.Ferramenta;
 import br.edu.infnet.jessefigueroapi.model.domain.Funcionario;
 import br.edu.infnet.jessefigueroapi.model.enums.StatusEmprestimo;
+import br.edu.infnet.jessefigueroapi.model.enums.StatusFuncionario;
 import br.edu.infnet.jessefigueroapi.model.repository.EmprestimoRepository;
+import br.edu.infnet.jessefigueroapi.model.repository.FerramentaRepository;
+import br.edu.infnet.jessefigueroapi.model.repository.FuncionarioRepository;
 import br.edu.infnet.jessefigueroapi.model.service.EmprestimoService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,44 +23,85 @@ import java.util.List;
 public class EmprestimoServiceImpl implements EmprestimoService {
 
     private final EmprestimoRepository emprestimoRepository;
-    private final FerramentaServiceImpl ferramentaService;
-    private final FuncionarioServiceImpl funcionarioService;
+    private final FerramentaRepository ferramentaRepository;
+    private final FuncionarioRepository funcionarioRepository;
+    private final EmprestimoMapper emprestimoMapper;
 
-
-    public EmprestimoServiceImpl(EmprestimoRepository emprestimoRepository, FuncionarioServiceImpl funcionarioService, FerramentaServiceImpl ferramentaService) {
+    public EmprestimoServiceImpl(EmprestimoRepository emprestimoRepository, FuncionarioRepository funcionarioRepository, FerramentaRepository ferramentaRepository, EmprestimoMapper emprestimoMapper) {
         this.emprestimoRepository = emprestimoRepository;
-        this.funcionarioService = funcionarioService;
-        this.ferramentaService = ferramentaService;
+        this.funcionarioRepository = funcionarioRepository;
+        this.ferramentaRepository = ferramentaRepository;
+        this.emprestimoMapper = emprestimoMapper;
     }
 
+//    @Transactional
+//    @Override
+//    public EmprestimoResponseDTO insert(EmprestimoRequestDTO emprestimoRequestDTO) {
+//
+//        validarFerramenta(emprestimoRequestDTO.getFerramentaId());
+//        validarFuncionario(emprestimoRequestDTO.getFuncionarioId());
+//
+//        emprestimoRequestDTO.setDataEmprestimo(LocalDateTime.now());
+//        emprestimoRequestDTO.setStatus(StatusEmprestimo.ATIVO);
+//
+//        if (emprestimoRequestDTO.getDataDevolucaoPrevista() == null) {
+//            emprestimoRequestDTO.setDataDevolucaoPrevista(LocalDateTime.now().plusDays(7));
+//        }
+//
+//        Ferramenta ferramenta = ferramentaRepository.findById(emprestimoRequestDTO.getFerramentaId())
+//                .orElseThrow(() -> new FerramentaNotFoundException("Ferramenta com ID: " + emprestimoRequestDTO.getFerramentaId() + "não encontrada!"));
+//
+//        ferramenta.setDisponivel(false);
+//
+//        Funcionario funcionario = funcionarioRepository.findById(emprestimoRequestDTO.getFuncionarioId())
+//                .orElseThrow(() -> new FuncionarioNotFoundException("Funcionário com ID: " + emprestimoRequestDTO.getFuncionarioId() + "não encontrado!"));
+//
+//        Emprestimo emprestimo = emprestimoMapper.toEntity(emprestimoRequestDTO);
+//        emprestimo.setFerramenta(ferramenta);
+//        emprestimo.setFuncionario(funcionario);
+//
+//        return emprestimoMapper.toDto(emprestimoRepository.save(emprestimo));
+//    }
+
     @Override
-    public EmprestimoResponseDTO insert(EmprestimoRequestDTO emprestimo) {
+    @Transactional
+    public EmprestimoResponseDTO insert(EmprestimoRequestDTO emprestimoRequestDTO) {
 
-        validarFerramenta(emprestimo.getFerramentaId());
-        validarFuncionario(emprestimo.getFuncionarioId());
+        Ferramenta ferramenta = ferramentaRepository.findById(emprestimoRequestDTO.getFerramentaId())
+                .orElseThrow(() -> new FerramentaNotFoundException("Ferramenta com ID: '" + emprestimoRequestDTO.getFerramentaId() + "' não encontrada!"));
 
-        emprestimo.setDataEmprestimo(LocalDateTime.now());
-        emprestimo.setStatus(StatusEmprestimo.ATIVO);
-
-        if (emprestimo.getDataDevolucaoPrevista() == null) {
-            emprestimo.setDataDevolucaoPrevista(LocalDateTime.now().plusDays(7));
+        if (!ferramenta.getDisponivel()) {
+            throw new IllegalStateException("Ferramenta '" + ferramenta.getNome() + "' não está disponível para empréstimo!");
         }
 
-        Ferramenta ferramenta = ferramentaService.findEntityById(emprestimo.getFerramentaId());
-        Funcionario funcionario = funcionarioService.findEntityById(emprestimo.getFuncionarioId());
+        Funcionario funcionario = funcionarioRepository.findById(emprestimoRequestDTO.getFuncionarioId())
+                .orElseThrow(() -> new FuncionarioNotFoundException("Funcionário com ID: '" + emprestimoRequestDTO.getFuncionarioId() + "' não encontrado!"));
 
-        Emprestimo emprestimoEntity = emprestimo.toEntity();
-        emprestimoEntity.setFerramenta(ferramenta);
-        emprestimoEntity.setFuncionario(funcionario);
+        if (funcionario.getStatus() != StatusFuncionario.ATIVO) {
+            throw new IllegalStateException("Funcionário '" + funcionario.getNome() + "' não está ativo!");
+        }
 
-        Emprestimo saved = emprestimoRepository.save(emprestimoEntity);
-        return new EmprestimoResponseDTO(saved);
+        emprestimoRequestDTO.setDataEmprestimo(LocalDateTime.now());
+        emprestimoRequestDTO.setStatus(StatusEmprestimo.ATIVO);
+
+        if (emprestimoRequestDTO.getDataDevolucaoPrevista() == null) {
+            emprestimoRequestDTO.setDataDevolucaoPrevista(LocalDateTime.now().plusDays(7));
+        }
+
+        ferramenta.setDisponivel(false);
+        ferramentaRepository.save(ferramenta);
+
+        Emprestimo emprestimo = emprestimoMapper.toEntity(emprestimoRequestDTO);
+        emprestimo.setFerramenta(ferramenta);
+        emprestimo.setFuncionario(funcionario);
+
+        return emprestimoMapper.toDto(emprestimoRepository.save(emprestimo));
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
-
-        Emprestimo emprestimo = emprestimoRepository.findById(id).orElseThrow(() -> new EmprestimoNotFoundException("Empréstimo não encontrado com ID: " + id));
+        Emprestimo emprestimo = emprestimoRepository.findById(id).orElseThrow(() -> new EmprestimoNotFoundException("Empréstimo não encontrado com ID: '" + id + "'!"));
 
         if (emprestimo.isAtivo()) {
             throw new IllegalStateException("Não é possível excluir um empréstimo ativo. Realize a devolução primeiro.");
@@ -67,85 +111,67 @@ public class EmprestimoServiceImpl implements EmprestimoService {
 
     @Override
     public List<EmprestimoResponseDTO> findAll() {
-        return emprestimoRepository.findAll().stream().map(EmprestimoResponseDTO::new).toList();
+        return emprestimoRepository.findAll().stream().map(emprestimoMapper::toDto).toList();
     }
 
     @Override
     public EmprestimoResponseDTO findById(Integer id) {
-        Emprestimo emprestimo = findEntityById(id);
-        return new EmprestimoResponseDTO(emprestimo);
+        return emprestimoMapper.toDto(emprestimoRepository.findById(id)
+                .orElseThrow(() -> new EmprestimoNotFoundException("Emprestimo com ID: '" + id + "' não encontrado!")));
     }
 
+    @Transactional
     @Override
-    public Emprestimo findEntityById(Integer id) {
-        return emprestimoRepository.findById(id).orElseThrow(() -> new EmprestimoNotFoundException("Emprestimo não encontrado: " + id));
-    }
+    public EmprestimoResponseDTO update(Integer id, EmprestimoRequestDTO emprestimoRequestDTO) {
 
-    @Override
-    public EmprestimoResponseDTO update(Integer id, EmprestimoRequestDTO emprestimo) {
-
-        Emprestimo emprestimoDB = emprestimoRepository.findById(id)
-                .orElseThrow(() -> new EmprestimoNotFoundException("Emprestimo não encontrado com ID: " + id));
+        Emprestimo emprestimoDB = emprestimoRepository.findById(id).orElseThrow(() -> new EmprestimoNotFoundException("Emprestimo não encontrado com ID: '" + id +"'!"));
 
         if (emprestimoDB.isConcluido()) {
             throw new EmprestimoConcluidoException("Não é possível alterar um empréstimo já concluído!");
         }
 
-        if (StatusEmprestimo.CANCELADO.equals(emprestimo.getStatus())) {
-            throw new EmprestimoCanceladoException("Não é possível alterar emprestimo cancelado!");
+        if (emprestimoDB.getStatus() == StatusEmprestimo.CANCELADO) {
+            throw new EmprestimoCanceladoException("Não é possível alterar empréstimo cancelado!");
         }
 
-        validarAtualizacao(emprestimoDB, emprestimo);
+        validarAtualizacao(emprestimoDB, emprestimoRequestDTO);
 
-        emprestimoDB.setDataDevolucaoPrevista(emprestimo.getDataDevolucaoPrevista());
-        emprestimoDB.setQuantidade(emprestimo.getQuantidade());
-        emprestimoDB.setObservacoes(emprestimo.getObservacoes());
+        emprestimoDB.setDataDevolucaoPrevista(emprestimoRequestDTO.getDataDevolucaoPrevista());
+        emprestimoDB.setQuantidade(emprestimoRequestDTO.getQuantidade());
+        emprestimoDB.setObservacoes(emprestimoRequestDTO.getObservacoes());
 
-        Emprestimo saved = emprestimoRepository.save(emprestimoDB);
-        return new EmprestimoResponseDTO(saved);
+        return emprestimoMapper.toDto(emprestimoRepository.save(emprestimoDB));
     }
 
-    public void validarFerramenta(Integer id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID é obrigatória!");
+    @Transactional
+    public EmprestimoResponseDTO devolverFerramenta(Integer emprestimoId) {
+        Emprestimo emprestimo = emprestimoRepository.findById(emprestimoId).orElseThrow(() -> new EmprestimoNotFoundException("Empréstimo não encontrado com ID: '" + emprestimoId + "'!"));
+
+        if (!emprestimo.isAtivo()) {
+            throw new EmprestimoAtivoException("Apenas empréstimos ativos podem ser devolvidos!");
         }
 
-        FerramentaResponseDTO ferramentaDB = ferramentaService.findById(id);
-        if (ferramentaDB == null) {
-            throw new FerramentaNotFoundException("Ferramenta não encontrada com ID: " + ferramentaDB.getId());
-        }
+        emprestimo.setDataDevolucaoReal(LocalDateTime.now());
+        emprestimo.setStatus(StatusEmprestimo.CONCLUIDO);
 
-        if (!ferramentaDB.getDisponivel()) {
-            throw new FerramentaIndisponivelException("Ferramenta '" + ferramentaDB.getNome() + "' não está disponível");
-        }
+        Ferramenta ferramenta = emprestimo.getFerramenta();
+        ferramenta.setDisponivel(true);
+        ferramentaRepository.save(ferramenta);
+
+        return emprestimoMapper.toDto(emprestimoRepository.save(emprestimo));
     }
 
-    public void validarFuncionario(Integer id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Funcionário é obrigatório!");
+    private void validarAtualizacao(Emprestimo emprestimo, EmprestimoRequestDTO emprestimoRequestDTO) {
+        if (emprestimoRequestDTO.getFerramentaId() != null && !emprestimoRequestDTO.getFerramentaId().equals(emprestimo.getFerramenta().getId())) {
+            throw new AlteracaoNaoPermitidaException("Não é possível alterar a ferramenta de um empréstimo!");
         }
 
-        FuncionarioResponseDTO funcionarioDB = funcionarioService.findById(id);
-        if (funcionarioDB == null) {
-            throw new FuncionarioNotFoundException("Funcionário não encontrado com ID: " + id);
+        if (emprestimoRequestDTO.getFuncionarioId() != null && !emprestimoRequestDTO.getFuncionarioId().equals(emprestimo.getFuncionario().getId())) {
+            throw new AlteracaoNaoPermitidaException("Não é possível alterar o funcionário de um empréstimo!");
         }
 
-        if (!funcionarioDB.getAtivo()) {
-            throw new FuncionarioInativoException("Funcionário '" + funcionarioDB.getNome() + "' não está ativo");
-        }
-    }
-
-    private void validarAtualizacao(Emprestimo existente, EmprestimoRequestDTO atualizacao) {
-        if (atualizacao.getFerramentaId() != null && !atualizacao.getFerramentaId().equals(existente.getFerramenta().getId())) {
-            throw new AlteracaoNaoPermitidaException("Não é possível alterar a ferramenta de um empréstimo");
-        }
-
-        if (atualizacao.getFuncionarioId() != null && !atualizacao.getFuncionarioId().equals(existente.getFuncionario().getId())) {
-            throw new AlteracaoNaoPermitidaException("Não é possível alterar o funcionário de um empréstimo");
-        }
-
-        if (atualizacao.getDataDevolucaoPrevista() != null) {
-            if (atualizacao.getDataDevolucaoPrevista().isBefore(existente.getDataEmprestimo())) {
+        if (emprestimoRequestDTO.getDataDevolucaoPrevista() != null) {
+            if (emprestimoRequestDTO.getDataDevolucaoPrevista().isBefore(emprestimo.getDataEmprestimo())) {
                 throw new DataInvalidaException("Data de devolução prevista não pode ser anterior à data de empréstimo");
             }
         }

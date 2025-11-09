@@ -1,0 +1,441 @@
+{
+	"info": {
+		"_postman_id": "9984c12f-b15f-41df-b193-0ba0c1a88f74",
+		"name": "jessefigueroapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27712311"
+	},
+	"item": [
+		{
+			"name": "Ferramentas",
+			"item": [
+				{
+					"name": "buscar-ferramentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ferramentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ferramentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar-ferramenta-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ferramentas/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ferramentas",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir-ferramenta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"teste\",\r\n    \"tipo\": \"teste\",\r\n    \"fabricante\": \"teste\",\r\n    \"preco\": 22.9,\r\n    \"numeroSerie\": \"CCtesteteste\",\r\n    \"dataAquisicao\": \"2025-05-10T09:12:44\",\r\n    \"disponivel\": true,\r\n    \"descricao\": \"teste teste teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ferramentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ferramentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir-ferramenta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ferramentas/36",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ferramentas",
+								"36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar-ferramenta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"JESSE\",\r\n    \"tipo\": \"JESSE\",\r\n    \"fabricante\": \"JESSE\",\r\n    \"preco\": 159.9,\r\n    \"numeroSerie\": \"JES112024\",\r\n    \"dataAquisicao\": \"2025-10-22T20:59:01.1152264\",\r\n    \"disponivel\": false,\r\n    \"descricao\": \"JESSE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ferramentas/37",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ferramentas",
+								"37"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints responsáveis pelo cadastro, consulta e gerenciamento de ferramentas do sistema."
+		},
+		{
+			"name": "Funcionarios",
+			"item": [
+				{
+					"name": "buscar-funcionarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/funcionarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"funcionarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar-funcionario-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/funcionarios/24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"funcionarios",
+								"24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir-funcionario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Mariana Costa\",\r\n    \"cpf\": \"78912345600\",\r\n    \"email\": \"mariana.costa@empresa.com\",\r\n    \"telefone\": \"47995556677\",\r\n    \"matricula\": \"FUNC006\",\r\n    \"departamento\": \"Financeiro\",\r\n    \"cargo\": \"Coordenadora\",\r\n    \"dataAdmissao\": \"10/09/2021\",\r\n    \"status\": \"INATIVO\",\r\n    \"enderecoId\": 4\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/funcionarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"funcionarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar-funcionario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Fernanda Lima\",\r\n    \"email\": \"fernanda.lima@empresa.com\",\r\n    \"cpf\": \"98765432100\",\r\n    \"telefone\": \"47992223344\",\r\n    \"matricula\": \"1002\",\r\n    \"departamento\": \"Compras\",\r\n    \"cargo\": \"Analista\",\r\n    \"dataAdmissao\": \"2025-11-01\",\r\n    \"ativo\": true,\r\n    \"endereco\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/funcionarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"funcionarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir-funcionario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/funcionarios/24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"funcionarios",
+								"24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ativar-funcionario",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/funcionarios/4/ativar?status=ATIVO",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"funcionarios",
+								"4",
+								"ativar"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ATIVO"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints responsáveis pelo cadastro, consulta, ativação e gerenciamento de funcionários do sistema."
+		},
+		{
+			"name": "Emprestimos",
+			"item": [
+				{
+					"name": "buscar-emprestimos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/emprestimos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"emprestimos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar-emprestimo-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/emprestimos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"emprestimos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir-emprestimo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ferramentaId\": 1,\r\n  \"funcionarioId\": 5, \r\n  \"dataEmprestimo\": \"2025-10-25T09:00:00\",\r\n  \"dataDevolucaoPrevista\": \"2025-12-22T09:00:00\",\r\n  \"dataDevolucaoReal\": \"2025-12-30T16:15:00\",\r\n  \"status\": \"ATIVO\",\r\n  \"observacoes\": \"Teste criação empréstimo\",\r\n  \"quantidade\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/emprestimos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"emprestimos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar-emprestimo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"funcionarioId\": \"7\",\r\n    \"ferramentaId\": \"6\",\r\n    \"dataEmprestimo\": \"2025-12-15T19:48:27.840724\",\r\n    \"dataDevolucaoPrevista\": \"2025-12-15T09:00:00\",\r\n    \"dataDevolucaoReal\": \"2025-12-30T16:15:00\",\r\n    \"status\": \"ATIVO\",\r\n    \"observacoes\": \"Devolvido antes do prazo. teste teste teste\",\r\n    \"quantidade\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/emprestimos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"emprestimos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir-emprestimo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/emprestimos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"emprestimos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "devolver-ferramenta",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/emprestimos/2/devolver",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"emprestimos",
+								"2",
+								"devolver"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints responsáveis pelo cadastro, consulta e gerenciamento de empréstimos do sistema."
+		}
+	]
+}
